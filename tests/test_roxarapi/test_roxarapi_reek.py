@@ -438,6 +438,23 @@ def test_rox_get_gridproperty(rms_project_path):
 
 
 @pytest.mark.requires_roxar
+def test_rms_get_grid(rms_project_path: str) -> None:
+    """Get a grid from an RMS project using the RMS API name."""
+    grid = xtgeo.grid_from_rms(rms_project_path, GRIDNAME1)
+
+    assert grid.dimensions == (40, 64, 14)
+
+
+@pytest.mark.requires_roxar
+def test_rox_get_grid_deprecation(rms_project_path: str) -> None:
+    """The deprecated Roxar alias warns and still loads a grid."""
+    with pytest.warns(PendingDeprecationWarning, match="grid_from_roxar"):
+        grid = xtgeo.grid_from_roxar(rms_project_path, GRIDNAME1)
+
+    assert grid.dimensions == (40, 64, 14)
+
+
+@pytest.mark.requires_roxar
 def test_rox_get_gridproperty_deprecation(rms_project_path: str) -> None:
     """The deprecated Roxar alias warns and still loads a grid property."""
     with pytest.warns(PendingDeprecationWarning, match="gridproperty_from_roxar"):
