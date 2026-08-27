@@ -1221,12 +1221,73 @@ def test_blocked_well_from_to_roxar(rms_project_path):
 
 
 @pytest.mark.requires_roxar
+def test_blocked_well_from_to_rms(rms_project_path):
+    """Test getting blocked wells from RMS API."""
+
+    rox = xtgeo.RoxUtils(rms_project_path)
+
+    bw = xtgeo.blockedwell_from_rms(
+        rox.project, GRIDNAME1, "BW", "OP_2", lognames="all"
+    )
+    df = bw.get_dataframe()
+
+    # Core structural columns must be first and in order
+    expected_prefix = ["X_UTME", "Y_UTMN", "Z_TVDSS"]
+    assert list(df.columns[: len(expected_prefix)]) == expected_prefix
+
+    # Remaining required logs must be present (order may vary)
+    required_logs = {
+        "I_INDEX",
+        "J_INDEX",
+        "K_INDEX",
+        "Zonelog",
+        "Poro",
+        "Perm",
+        "Facies",
+    }
+    assert required_logs.issubset(set(df.columns))
+
+    # Ensure no unexpected loss of total column count
+    assert len(df.columns) >= len(expected_prefix) + len(required_logs)
+
+    bw.delete_log("Zonelog")
+    bw.create_log("Some_new")
+
+    bw.to_roxar(rox.project, GRIDNAME1, "BW", "OP_2")
+
+    # read again from RMS
+    bw_2 = xtgeo.blockedwell_from_rms(
+        rox.project, GRIDNAME1, "BW", "OP_2", lognames="all"
+    )
+
+    # zonelog will still be in Roxar since it was there from before
+    assert "Zonelog" in list(bw_2.get_dataframe().columns)
+    assert "Some_new" in list(bw_2.get_dataframe().columns)
+
+    rox.project.close()
+
+
+@pytest.mark.requires_roxar
+def test_blocked_well_from_roxar_deprecation(rms_project_path: str) -> None:
+    """The deprecated Roxar alias warns and still loads a blocked well."""
+    rox = xtgeo.RoxUtils(rms_project_path)
+
+    with pytest.warns(PendingDeprecationWarning, match="blockedwell_from_roxar"):
+        bw = xtgeo.blockedwell_from_roxar(
+            rox.project, GRIDNAME1, "BW", "OP_2", lognames="all"
+        )
+
+    assert "Zonelog" in bw.lognames
+    rox.project.close()
+
+
+@pytest.mark.requires_roxar
 def test_blocked_well_roxar_to_from_file(rms_project_path, tmp_path):
     """Test getting a single blocked well from RMS, store to file and import again."""
 
     rox = xtgeo.RoxUtils(rms_project_path)
 
-    bw = xtgeo.blockedwell_from_roxar(
+    bw = xtgeo.blockedwell_from_rms(
         rox.project, GRIDNAME1, "BW", "OP_2", lognames="all"
     )
     filename = tmp_path / "op2.bw"
