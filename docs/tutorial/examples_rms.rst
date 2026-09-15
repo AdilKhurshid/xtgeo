@@ -355,7 +355,7 @@ a certain depth interval has horizontal layers.
                              region_number=1)
 
        grd.inactivate_by_dz(0.001)
-       grd.to_roxar(PRJ, GNAME_HYBRID)
+    grd.to_rms(PRJ, GNAME_HYBRID)
 
 
    if __name__ == "__main__":

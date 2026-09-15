@@ -265,6 +265,8 @@ information these functions provided.
 The following methods are deprecated but with replacements already in place.
 
 - `Grid().create_box()` is deprecated. Use `xtgeo.create_box_grid()` instead.
+- `Grid.to_roxar(...)` is deprecated. Use `Grid.to_rms(...)` instead,
+  with the same arguments.
 - `Grid().dataframe` is deprecated. Use `Grid().get_dataframe()` instead.
 - `Grid().get_gridproperties()` is deprecated. Use `Grid().gridprops` instead.
 - `Grid().get_dxdy()` is deprecated. Use `Grid().get_dx()` and
