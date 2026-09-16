@@ -343,6 +343,8 @@ argument has been changed to `asmasked` which is already in place.
 
 ### Polygons
 
+- `Polygons.to_roxar(...)` is deprecated. Use `Polygons.to_rms(...)` instead,
+  with the same arguments.
 - `Polygons().from_list()` is deprecated. Use a direct initialization instead as
   `Polygons(plist)`.
 
