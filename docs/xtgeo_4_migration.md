@@ -253,6 +253,9 @@ methods.
 
 ### Cube
 
+- `Cube.to_roxar(...)` is deprecated. Use `Cube.to_rms(...)` instead,
+  with the same arguments.
+
 segy scanning methods have been deprecated. Please use
 [segyio](https://segyio.readthedocs.io/en/latest/) if you still need the
 information these functions provided.
