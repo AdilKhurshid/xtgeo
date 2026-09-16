@@ -333,6 +333,8 @@ argument has been changed to `asmasked` which is already in place.
 
 ### Points
 
+- `Points.to_roxar(...)` is deprecated. Use `Points.to_rms(...)` instead,
+  with the same arguments.
 - `Points().from_list()` is deprecated. Use a direct initialization instead as
   `Points(values=plist)`.
 - `Points().from_dataframe()` is deprecated. Use
