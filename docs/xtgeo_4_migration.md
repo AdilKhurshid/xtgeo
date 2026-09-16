@@ -321,6 +321,11 @@ argument has been changed to `asmasked` which is already in place.
 - `GridProperty().get_actnum(mask=True)` is deprecated.
   Use `asmasked` instead, e.g. `GridProperty().get_actnum(asmasked=True)`.
 
+### BlockedWell
+
+- `BlockedWell.to_roxar(...)` is deprecated. Use `BlockedWell.to_rms(...)`
+  instead, with the same arguments.
+
 ### Points
 
 - `Points().from_list()` is deprecated. Use a direct initialization instead as
